@@ -1,15 +1,18 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/muhamadijlal/gobasic/database"
+	"github.com/muhamadijlal/gobasic/database/migration"
+	"github.com/muhamadijlal/gobasic/routes"
+)
 
 func main() {
-	app := fiber.New()
+	database.ConnectDB()
+	migration.RunMigrate()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{
-			"message": "Hai haidar ijlal",
-		})
-	})
+	app := fiber.New()
+	routes.RouterApp(app)
 
 	app.Listen(":3000")
 }
